@@ -60,6 +60,77 @@ npm run typecheck     # TypeScript型チェック
 npm run db:studio     # Prisma Studio（DB GUI）
 ```
 
+## Docker
+
+### コンテナ構成
+
+| サービス | コンテナ名 | ポート | 説明 |
+|----------|-----------|--------|------|
+| postgres | reverse-todo-db | 5432 | PostgreSQL 16 |
+| api | reverse-todo-api | 3001 | NestJS バックエンド |
+| web | reverse-todo-web | 3000 | Next.js フロントエンド |
+
+### 起動・停止
+
+```bash
+# 全サービス起動（バックグラウンド）
+docker compose up -d
+
+# PostgreSQLだけ起動（ローカル開発時）
+docker compose up -d postgres
+
+# ログを見ながら起動（フォアグラウンド）
+docker compose up
+
+# 特定サービスのログを確認
+docker compose logs -f api
+docker compose logs -f web
+docker compose logs -f postgres
+
+# 全サービス停止
+docker compose down
+
+# 停止 + データボリューム削除（DBリセット）
+docker compose down -v
+```
+
+### コンテナに入る
+
+```bash
+# PostgreSQLに接続
+docker compose exec postgres psql -U postgres -d reverse_todo
+
+# APIコンテナに入る
+docker compose exec api sh
+
+# Webコンテナに入る
+docker compose exec web sh
+```
+
+### ビルド・再ビルド
+
+```bash
+# イメージをビルドして起動
+docker compose up -d --build
+
+# 特定サービスだけ再ビルド
+docker compose build api
+docker compose build web
+
+# キャッシュなしで再ビルド
+docker compose build --no-cache
+```
+
+### 状態確認
+
+```bash
+# 実行中のコンテナ一覧
+docker compose ps
+
+# コンテナのリソース使用状況
+docker compose top
+```
+
 ## プロジェクト構成
 
 ```
