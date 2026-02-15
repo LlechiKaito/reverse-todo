@@ -24,7 +24,8 @@ prisma/      - Database schema and migrations
 
 ```bash
 npm install                  # Install all dependencies
-docker compose up -d         # Start PostgreSQL
+docker compose up -d         # Start all services (PostgreSQL, API, Web)
+docker compose up -d postgres # Start PostgreSQL only
 npm run db:migrate           # Run Prisma migrations
 npm run db:seed              # Seed sample data
 npm run dev:web              # Start frontend (localhost:3000)
@@ -40,10 +41,20 @@ npm run format               # Check formatting with Prettier
 - Feature-based organization (`features/todos/`)
 - Custom hooks for logic encapsulation
 
-### Backend (Layered Architecture)
-- Controller → Service → Repository
+### Backend (Clean Architecture)
+- 依存性の逆転 (DIP) を採用
+- `Presentation → Application → Domain ← Infrastructure`
+- Domain 層に Repository インターフェースを定義し、Infrastructure 層で実装
 - DTOs with class-validator
 - Prisma for data access
+
+```
+apps/api/src/
+├── presentation/     # Controllers, DTOs, Filters, Interceptors
+├── application/      # Services (ユースケース)
+├── domain/           # Entities, Repository Interfaces
+└── infrastructure/   # Repository Implementations, Prisma, Config
+```
 
 ## Database
 
