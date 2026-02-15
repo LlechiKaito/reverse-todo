@@ -18,4 +18,4 @@ RUN npx prisma generate
 RUN npm run build -w apps/api
 
 EXPOSE 3001
-CMD ["node", "apps/api/dist/main.js"]
+CMD sh -c "npx prisma migrate deploy && npx prisma db seed && node apps/api/dist/main.js"
