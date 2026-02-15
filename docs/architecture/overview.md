@@ -1,34 +1,25 @@
 # Architecture Overview
 
-## システム構成
+> システム全体の構成を俯瞰するドキュメント
 
-```
-Client (Browser)
-  │
-  ├── Next.js (SSR/CSR) ──── S3 + CloudFront
-  │
-  └── REST API ──── NestJS (ECS Fargate)
-                      │
-                      └── PostgreSQL (RDS)
-```
+## 書く内容
 
-## モノレポ構成
+### 1. システム構成図
+- Browser → Next.js(3000) → NestJS(3001) → PostgreSQL(5432) の通信フロー図
+- Mermaid またはテキストベースの図で記述
 
-npm workspacesを使用したモノレポ構成。
+### 2. モノレポ構成
+- `apps/web`, `apps/api`, `packages/`, `prisma/` それぞれの役割
+- パッケージ間の依存関係
 
-- `apps/web` - フロントエンド
-- `apps/api` - バックエンド
-- `packages/` - 共有パッケージ
-- `infra/` - インフラ（AWS CDK）
+### 3. 技術スタック一覧表
+- 各領域（Frontend / Backend / DB / Monorepo）の技術とバージョン
 
-## デザインパターン
+### 4. アーキテクチャパターン概要
+- Frontend: Feature-based + Container/Presentational（詳細は frontend.md）
+- Backend: レイヤードアーキテクチャ（詳細は backend.md）
+- ここでは概要だけ。詳細は各ドキュメントに委ねる
 
-### Frontend: Container/Presentational
-- **containers/**: データ取得・状態管理
-- **components/**: 純粋なUIコンポーネント
-- **hooks/**: ロジックのカプセル化
-
-### Backend: レイヤードアーキテクチャ
-- **Controller層**: HTTPリクエスト処理
-- **Service層**: ビジネスロジック
-- **Repository層**: データアクセス
+## 書き方のポイント
+- 新メンバーが最初に読む前提で、全体像をつかめるようにする
+- 技術選定の「なぜ」は `decisions/` の ADR に書き、ここでは「何を使っているか」に留める

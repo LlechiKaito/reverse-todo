@@ -1,26 +1,33 @@
-# ADR-001: モノレポ構成の採用
+# ADR（Architecture Decision Record）
 
-## Status
+> 技術的な意思決定を記録するドキュメント
 
-Accepted
+## 書く内容
 
-## Context
+### 各 ADR に以下のセクションを記載
 
-Frontend, Backend, Infrastructure のコードを管理する方法を決定する必要がある。
+#### Status
+- Proposed / Accepted / Deprecated / Superseded のいずれか
 
-## Decision
+#### Context
+- 何を決める必要があったのか（背景・課題）
 
-npm workspacesを使用したモノレポ構成を採用する。
+#### Decision
+- 何を選んだか（結論）
 
-## Rationale
+#### Rationale
+- なぜその選択をしたか（比較検討した選択肢と判断理由）
 
-- 共有型定義の一元管理
-- 統一されたlint/format設定
-- 依存関係の一元管理
-- 開発者体験の向上（単一リポジトリでの操作）
+#### Consequences
+- その決定によるメリット・デメリット・影響
 
-## Consequences
+### ADR の例
+- ADR-001: モノレポ構成の採用（npm workspaces を選んだ理由）
+- ADR-002: レイヤードアーキテクチャの採用
+- ADR-003: Prisma ORM の採用
+- ADR-004: Tailwind CSS の採用
 
-- npm workspacesの仕組みの理解が必要
-- CIの設定がやや複雑になる
-- パッケージ間の依存関係管理が必要
+## 書き方のポイント
+- 1 つの意思決定につき 1 ファイル（`ADR-NNN-タイトル.md`）
+- 過去の ADR は消さない。変更時は新しい ADR で Superseded にする
+- 「なぜ他の選択肢を選ばなかったか」も書くと後から振り返りやすい

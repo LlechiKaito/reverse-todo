@@ -1,61 +1,29 @@
 # Local Development Guide
 
-## 前提条件
+> ローカル開発環境の構築・運用手順
 
-- Node.js 20+
-- Docker / Docker Compose
+## 書く内容
 
-## セットアップ
+### 1. 前提条件
+- 必要なツールとバージョン（Node.js, Docker, npm）
 
-```bash
-# リポジトリクローン
-git clone <repo-url>
-cd reverse-todo
+### 2. 初回セットアップ手順
+- リポジトリ clone → npm install → .env コピー → Docker 起動 → DB マイグレーション
+- 手順をコピペで実行できるコマンド列として記載
 
-# 依存関係インストール
-npm install
+### 3. 開発サーバーの起動・停止
+- フロントエンド・バックエンドそれぞれの起動コマンドとポート番号
 
-# 環境変数
-cp .env.example .env
+### 4. DB 操作
+- マイグレーション、シード投入、Prisma Studio の使い方
 
-# PostgreSQL起動
-docker compose up -d
+### 5. Docker 操作
+- 起動・停止・ログ確認・コンテナに入る方法
+- DB リセット手順
 
-# DB初期化
-npm run db:generate
-npm run db:migrate
-npm run db:seed
-```
+### 6. トラブルシューティング
+- よくあるエラーと対処法（ポート競合、DB 接続失敗 等）
 
-## 開発
-
-```bash
-# バックエンド
-npm run dev:api    # http://localhost:3001
-
-# フロントエンド
-npm run dev:web    # http://localhost:3000
-```
-
-## DB操作
-
-```bash
-npm run db:studio     # Prisma Studio
-npm run db:migrate    # マイグレーション実行
-npm run db:seed       # シードデータ投入
-```
-
-## トラブルシューティング
-
-### ポートが使用中
-```bash
-lsof -i :3000  # or :3001, :5432
-```
-
-### DBリセット
-```bash
-docker compose down -v
-docker compose up -d
-npm run db:migrate
-npm run db:seed
-```
+## 書き方のポイント
+- 初めてこのプロジェクトに触れる人が迷わず環境構築できるようにする
+- コマンドはコピペ可能な形式で記載する

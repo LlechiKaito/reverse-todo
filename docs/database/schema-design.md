@@ -1,50 +1,28 @@
 # Database Schema Design
 
-## ER図
+> DB スキーマの設計ドキュメント
 
-```
-User 1──* Todo *──* Tag
-              (TodoTag)
-```
+## 書く内容
 
-## テーブル
+### 1. ER 図
+- テーブル間のリレーション（1対多、多対多）を図示
+- Mermaid の erDiagram またはテキストで記述
 
-### users
-| Column | Type | Constraints |
-|--------|------|-------------|
-| id | UUID | PK, default uuid |
-| email | VARCHAR | UNIQUE, NOT NULL |
-| name | VARCHAR | NOT NULL |
-| created_at | TIMESTAMP | NOT NULL, default now |
-| updated_at | TIMESTAMP | NOT NULL, auto update |
+### 2. テーブル定義
+- テーブルごとにカラム一覧を表で記載
+  - カラム名、型、制約（PK / FK / UNIQUE / NOT NULL / DEFAULT）
+- 対象テーブル: users, todos, tags, todo_tags
 
-### todos
-| Column | Type | Constraints |
-|--------|------|-------------|
-| id | UUID | PK, default uuid |
-| title | VARCHAR | NOT NULL |
-| description | TEXT | NULLABLE |
-| status | ENUM | NOT NULL, default PENDING |
-| due_date | TIMESTAMP | NULLABLE |
-| user_id | UUID | FK → users.id, CASCADE |
-| created_at | TIMESTAMP | NOT NULL, default now |
-| updated_at | TIMESTAMP | NOT NULL, auto update |
+### 3. Enum 定義
+- TodoStatus 等の Enum の値と意味
 
-### tags
-| Column | Type | Constraints |
-|--------|------|-------------|
-| id | UUID | PK, default uuid |
-| name | VARCHAR | UNIQUE, NOT NULL |
-| created_at | TIMESTAMP | NOT NULL, default now |
+### 4. インデックス
+- どのカラムにインデックスを張っているか、理由も添える
 
-### todo_tags
-| Column | Type | Constraints |
-|--------|------|-------------|
-| todo_id | UUID | PK, FK → todos.id, CASCADE |
-| tag_id | UUID | PK, FK → tags.id, CASCADE |
+### 5. マイグレーション方針
+- Prisma Migrate の運用ルール
+- 本番適用時の手順
 
-## TodoStatus Enum
-
-- `PENDING` - 未着手
-- `IN_PROGRESS` - 進行中
-- `COMPLETED` - 完了
+## 書き方のポイント
+- `prisma/schema.prisma` が正とし、このドキュメントは人間向けの補足説明
+- スキーマ変更時はこのドキュメントも更新する
