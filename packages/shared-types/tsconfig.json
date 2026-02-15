@@ -1,0 +1,4 @@
+{
+  "extends": "@reverse-todo/tsconfig/base.json",
+  "include": ["src"]
+}
