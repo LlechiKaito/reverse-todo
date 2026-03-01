@@ -13,6 +13,7 @@ RUN npm ci
 COPY packages/ ./packages/
 COPY apps/web/ ./apps/web/
 
+ENV NEXT_PUBLIC_API_URL=http://api:3001
 RUN npm run build -w apps/web
 
 EXPOSE 3000

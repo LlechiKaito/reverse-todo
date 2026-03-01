@@ -1,23 +1,16 @@
 import { Injectable } from '@nestjs/common';
 
-import { Tag } from '@/domain/entities/tag.entity';
 import { Todo } from '@/domain/entities/todo.entity';
-import { User } from '@/domain/entities/user.entity';
 import { TodoRepository } from '@/domain/repositories/todo.repository';
 import { PrismaService } from '@/infrastructure/database/prisma.service';
+import { TodoStatus } from '@prisma/client';
 
 @Injectable()
 export class PrismaTodoRepository implements TodoRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll(): Promise<Todo[]> {
-    const records = await this.prisma.todo.findMany({
-      include: {
-        user: { select: { id: true, name: true, email: true } },
-        tags: { include: { tag: true } },
-      },
-      orderBy: { createdAt: 'desc' },
-    });
+    const records = await this.prisma.todo.findMany();
 
     return records.map(
       (r) =>
@@ -25,13 +18,16 @@ export class PrismaTodoRepository implements TodoRepository {
           r.id,
           r.title,
           r.description,
-          r.status,
-          r.dueDate,
-          new User(r.user.id, r.user.name, r.user.email),
-          r.tags.map((t) => new Tag(t.tag.id, t.tag.name)),
-          r.createdAt,
-          r.updatedAt,
+          r.status
         ),
     );
+  }
+
+  async create(title: string, description: string): Promise<Todo> {
+    const record = await this.prisma.todo.create({
+      data: { title, description, status: TodoStatus.PENDING },
+    });
+
+    return new Todo(record.id, record.title, record.description, record.status);
   }
 }
