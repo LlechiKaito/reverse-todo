@@ -22,3 +22,43 @@ enum TodoStatus {
   IN_PROGRESS
   COMPLETED
 }
+
+model Challenge {
+  id        String            @id @default(uuid())
+  title     String
+  reason    String?
+  category  ChallengeCategory
+  status    ChallengeStatus   @default(ACTIVE)
+  createdAt DateTime          @default(now()) @map("created_at")
+
+  dailyLogs DailyLog[]
+
+  @@index([status])
+  @@map("challenges")
+}
+
+model DailyLog {
+  id          String   @id @default(uuid())
+  challengeId String   @map("challenge_id")
+  date        DateTime @db.Date
+  success     Boolean
+
+  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  @@unique([challengeId, date])
+  @@index([challengeId])
+  @@map("daily_logs")
+}
+
+enum ChallengeCategory {
+  HEALTH
+  MONEY
+  TIME
+  HABIT
+  DIGITAL
+}
+
+enum ChallengeStatus {
+  ACTIVE
+  COMPLETED
+}

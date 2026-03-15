@@ -19,9 +19,7 @@ export function Sidebar() {
     <aside className="flex flex-col gap-7 w-[240px] h-full bg-[var(--color-bg-secondary)] border-r border-[var(--color-border)] px-5 py-7">
       {/* Logo */}
       <div className="flex items-center gap-2.5 w-full">
-        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent">
-          <span className="text-white text-lg font-black">✕</span>
-        </div>
+        <img src="/logo.svg" alt="NOT-To-Do" className="w-8 h-8 rounded-lg" />
         <span className="text-[var(--color-text-primary)] text-lg font-bold tracking-tight">
           NOT-To-Do
         </span>

@@ -18,6 +18,9 @@ const fraunces = Fraunces({
 export const metadata: Metadata = {
   title: 'NOT-To-Do',
   description: 'やめたいことを管理するアプリ',
+  icons: {
+    icon: '/logo.svg',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
