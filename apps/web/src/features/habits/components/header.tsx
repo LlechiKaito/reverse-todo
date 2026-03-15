@@ -1,3 +1,6 @@
+'use client';
+
+import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
 
 interface HeaderProps {
@@ -14,10 +17,13 @@ export function Header({ date, title }: HeaderProps) {
           {title}
         </h1>
       </div>
-      <button className="flex items-center gap-2 bg-accent text-white rounded-xl px-5 py-2.5 text-sm font-semibold shadow-[0_8px_24px_rgba(99,102,241,0.2)] hover:brightness-110 transition">
+      <Link
+        to="/new"
+        className="flex items-center gap-2 bg-accent text-white rounded-xl px-5 py-2.5 text-sm font-semibold shadow-[0_8px_24px_rgba(99,102,241,0.2)] hover:brightness-110 transition"
+      >
         <Plus size={18} />
         <span>新規宣言</span>
-      </button>
+      </Link>
     </div>
   );
 }

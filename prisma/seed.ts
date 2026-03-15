@@ -1,51 +1,81 @@
-import { PrismaClient, TodoStatus } from '@prisma/client';
+import { PrismaClient, ChallengeCategory, TodoStatus } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+function daysAgo(n: number): Date {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
 async function main() {
   // Clean existing data
+  await prisma.dailyLog.deleteMany();
+  await prisma.challenge.deleteMany();
   await prisma.todo.deleteMany();
 
-  // Create todos
-  await prisma.todo.create({
+  // Challenge 1: 7-day streak
+  const c1 = await prisma.challenge.create({
     data: {
-      title: 'ログイン画面のバグ修正',
-      description: 'パスワードリセットのリンクが動作しない問題を修正する',
-      status: TodoStatus.IN_PROGRESS,
+      title: '無駄な会議に出席する',
+      reason: '集中時間が減って生産性が落ちる',
+      category: ChallengeCategory.TIME,
     },
   });
 
-  await prisma.todo.create({
+  // Create 7 consecutive success logs (today through 6 days ago)
+  for (let i = 0; i < 7; i++) {
+    await prisma.dailyLog.create({
+      data: { challengeId: c1.id, date: daysAgo(i), success: true },
+    });
+  }
+
+  // Challenge 2: 3-day streak
+  const c2 = await prisma.challenge.create({
     data: {
-      title: 'ダッシュボードの新規グラフ追加',
-      description: '月次売上のグラフをダッシュボードに追加する',
-      status: TodoStatus.PENDING,
+      title: '完璧主義で悩む',
+      reason: '行動が遅くなるから',
+      category: ChallengeCategory.HABIT,
     },
   });
 
-  await prisma.todo.create({
+  for (let i = 0; i < 3; i++) {
+    await prisma.dailyLog.create({
+      data: { challengeId: c2.id, date: daysAgo(i), success: true },
+    });
+  }
+
+  // Challenge 3: 1-day streak (warning)
+  const c3 = await prisma.challenge.create({
     data: {
-      title: 'ユーザープロフィールページ作成',
-      description: null,
-      status: TodoStatus.PENDING,
+      title: '夜更かしする',
+      reason: '翌日のパフォーマンスが落ちる',
+      category: ChallengeCategory.HEALTH,
     },
   });
 
-  await prisma.todo.create({
+  await prisma.dailyLog.create({
+    data: { challengeId: c3.id, date: daysAgo(0), success: true },
+  });
+  await prisma.dailyLog.create({
+    data: { challengeId: c3.id, date: daysAgo(1), success: false },
+  });
+
+  // Challenge 4: 14-day streak (featured)
+  const c4 = await prisma.challenge.create({
     data: {
-      title: 'API レスポンスのキャッシュ実装',
-      description: 'Redis を使った API レスポンスキャッシュを導入する',
-      status: TodoStatus.COMPLETED,
+      title: '寝る前にSNSを見る',
+      reason: '睡眠の質が下がるから',
+      category: ChallengeCategory.DIGITAL,
     },
   });
 
-  await prisma.todo.create({
-    data: {
-      title: 'メール通知の文面修正',
-      description: '通知メールのフッターにプライバシーポリシーリンクを追加',
-      status: TodoStatus.IN_PROGRESS,
-    },
-  });
+  for (let i = 0; i < 14; i++) {
+    await prisma.dailyLog.create({
+      data: { challengeId: c4.id, date: daysAgo(i), success: true },
+    });
+  }
 
   console.log('Seed data created successfully.');
 }
