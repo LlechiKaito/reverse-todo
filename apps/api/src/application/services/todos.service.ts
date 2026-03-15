@@ -13,4 +13,8 @@ export class TodosService {
   async findAll(): Promise<Todo[]> {
     return this.todoRepository.findAll();
   }
+
+  async delete(id: string): Promise<void> {
+    return this.todoRepository.delete(id);
+  }
 }
