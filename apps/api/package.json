@@ -8,6 +8,9 @@
     "start:dev": "nest start --watch",
     "start:prod": "node -r tsconfig-paths/register dist/main",
     "lint": "eslint \"{src,test}/**/*.ts\"",
+    "test": "jest --config jest.config.ts",
+    "test:unit": "jest --config jest.config.ts --testPathPattern=tests/unit",
+    "test:integration": "jest --config jest.config.ts --testPathPattern=tests/integration",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -24,11 +27,17 @@
   "devDependencies": {
     "@nestjs/cli": "^10.4.0",
     "@nestjs/schematics": "^10.2.0",
+    "@nestjs/testing": "^10.4.22",
     "@reverse-todo/eslint-config": "*",
     "@reverse-todo/tsconfig": "*",
     "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.0.0",
+    "@types/supertest": "^6.0.3",
     "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.4.6",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.6.0"
   }

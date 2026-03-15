@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { createTodo } from '../services/todo.service';
+import { createTodo } from '@/features/todos/services/todo.service';
 
 export function TodoForm() {
   const router = useRouter();

@@ -1,8 +1,7 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 
 import { TodosService } from '@/application/services/todos.service';
-import { CreateTodoDto } from '../dto/CreateTodoDto';
-import { HttpStatus } from '@nestjs/common';
+import { CreateTodoDto } from '@/presentation/dto/create-todo.dto';
 
 @Controller('todos')
 export class TodosController {
@@ -15,6 +14,9 @@ export class TodosController {
 
   @Post()
   async create(@Body() createTodoDto: CreateTodoDto) {
-    return this.todosService.create(createTodoDto.title, createTodoDto.description);
+    return this.todosService.create(
+      createTodoDto.title,
+      createTodoDto.description ?? null,
+    );
   }
 }

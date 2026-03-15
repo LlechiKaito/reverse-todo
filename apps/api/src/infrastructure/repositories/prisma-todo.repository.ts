@@ -23,7 +23,7 @@ export class PrismaTodoRepository implements TodoRepository {
     );
   }
 
-  async create(title: string, description: string): Promise<Todo> {
+  async create(title: string, description: string | null): Promise<Todo> {
     const record = await this.prisma.todo.create({
       data: { title, description, status: TodoStatus.PENDING },
     });

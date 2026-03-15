@@ -4,18 +4,30 @@ import { useState } from 'react';
 import { ArrowLeft, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const categories = ['健康', 'お金', '時間', '習慣', 'デジタル'];
+import { ChallengeCategory } from '@/types/challenge';
+
+import { CATEGORY_OPTIONS } from '@/features/habits/constants';
+import { createChallenge } from '@/features/habits/services/challenge.service';
 
 export function NewChallengeForm() {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [reason, setReason] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] =
+    useState<ChallengeCategory | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: API連携
-    console.log({ title, reason, category: selectedCategory });
+    if (!title.trim() || !selectedCategory) return;
+
+    setIsSubmitting(true);
+    await createChallenge({
+      title: title.trim(),
+      reason: reason.trim() || undefined,
+      category: selectedCategory,
+    });
+    setIsSubmitting(false);
     navigate('/');
   };
 
@@ -70,20 +82,22 @@ export function NewChallengeForm() {
             カテゴリ
           </label>
           <div className="flex gap-2.5 flex-wrap">
-            {categories.map((cat) => {
-              const isSelected = selectedCategory === cat;
+            {CATEGORY_OPTIONS.map((opt) => {
+              const isSelected = selectedCategory === opt.value;
               return (
                 <button
-                  key={cat}
+                  key={opt.value}
                   type="button"
-                  onClick={() => setSelectedCategory(isSelected ? null : cat)}
+                  onClick={() =>
+                    setSelectedCategory(isSelected ? null : opt.value)
+                  }
                   className={`rounded-full px-4 py-2 text-[13px] border transition ${
                     isSelected
                       ? 'bg-[#6366F120] border-[#6366F150] text-[#A5B4FC] font-semibold'
                       : 'bg-white/5 border-white/10 text-[var(--color-text-secondary)] font-medium hover:bg-white/10'
                   }`}
                 >
-                  {cat}
+                  {opt.label}
                 </button>
               );
             })}
@@ -93,10 +107,11 @@ export function NewChallengeForm() {
         {/* Submit */}
         <button
           type="submit"
-          className="flex items-center justify-center gap-2 w-full h-[52px] rounded-xl bg-accent text-white text-base font-semibold hover:brightness-110 transition"
+          disabled={isSubmitting || !title.trim() || !selectedCategory}
+          className="flex items-center justify-center gap-2 w-full h-[52px] rounded-xl bg-accent text-white text-base font-semibold hover:brightness-110 transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Plus size={18} />
-          <span>挑戦を始める</span>
+          <span>{isSubmitting ? '送信中...' : '挑戦を始める'}</span>
         </button>
       </form>
     </div>

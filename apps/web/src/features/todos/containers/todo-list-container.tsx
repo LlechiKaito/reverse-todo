@@ -1,6 +1,6 @@
-import { getTodos } from '../services/todo.service';
-import { TodoList } from '../components/todo-list';
-import { TodoForm } from '../components/todo-form';
+import { TodoForm } from '@/features/todos/components/todo-form';
+import { TodoList } from '@/features/todos/components/todo-list';
+import { getTodos } from '@/features/todos/services/todo.service';
 
 export async function TodoListContainer() {
   const todos = await getTodos();

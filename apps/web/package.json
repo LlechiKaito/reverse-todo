@@ -18,6 +18,7 @@
     "react-router-dom": "^7.13.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@reverse-todo/eslint-config": "*",
     "@reverse-todo/tsconfig": "*",
     "@types/node": "^22.0.0",
