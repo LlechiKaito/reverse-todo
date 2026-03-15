@@ -14,7 +14,7 @@ export class TodosService {
     return this.todoRepository.findAll();
   }
 
-  async create(title: string, description: string): Promise<Todo> {
+  async create(title: string, description: string | null): Promise<Todo> {
     return this.todoRepository.create(title, description);
   }
 }

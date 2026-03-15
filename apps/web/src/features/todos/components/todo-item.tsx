@@ -1,6 +1,6 @@
 import { Todo } from '@/types/todo';
 
-import { STATUS_COLOR, STATUS_LABEL } from '../constants';
+import { STATUS_COLOR, STATUS_LABEL } from '@/features/todos/constants';
 
 type Props = {
   todo: Todo;
